@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Vele.SalaryNegotiator.Core.Services;
-using Vele.SalaryNegotiator.Core.Services.Interfaces;
+using Vele.SalaryNegotiator.Core.Generators;
+using Vele.SalaryNegotiator.Core.Generators.Interfaces;
 
-namespace Vele.SalaryNegotiator.Test.Services;
+namespace Vele.SalaryNegotiator.Test.Generators;
 
 [TestFixture]
 public class CodeGeneratorTests
@@ -20,7 +20,7 @@ public class CodeGeneratorTests
     {
         string code = _codeGenerator.Generate();
 
-        Assert.NotNull(code);
-        Assert.That(code.Length == 12);
+        Assert.That(code, Is.Not.Null.And.Not.Empty);
+        Assert.That(code, Has.Length.EqualTo(12));
     }
 }
