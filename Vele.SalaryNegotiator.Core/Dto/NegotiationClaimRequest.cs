@@ -5,7 +5,7 @@ namespace Vele.SalaryNegotiator.Core.Dto;
 
 public class NegotiationClaimRequest
 {
-    public string NegotiationId { get; set; }
+    public string Id { get; set; }
 
     public Offer.OfferSide Side { get; set; }
 
@@ -15,7 +15,7 @@ public class NegotiationClaimRequest
     {
         public Validator()
         {
-            RuleFor(r => r.NegotiationId).NotEmpty();
+            RuleFor(r => r.Id).NotEmpty();
             RuleFor(r => r.Side).IsInEnum();
             RuleFor(r => r.Name).NotEmpty();
         }

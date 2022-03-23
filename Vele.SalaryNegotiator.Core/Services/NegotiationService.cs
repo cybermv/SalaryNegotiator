@@ -37,8 +37,9 @@ public class NegotiationService : INegotiationService
 
     public async Task<NegotiationCreateOrClaimResponse> Create(NegotiationCreateRequest request)
     {
-        DateTime now = DateTime.UtcNow;
+        _logger.LogInformation("Creating new negotiation with data {@NegotiationCreateRequest}", request);
 
+        DateTime now = DateTime.UtcNow;
         NegotiationCreateRequest.Validator validator = new NegotiationCreateRequest.Validator();
         ValidationResult result = await validator.ValidateAsync(request);
         if (!result.IsValid)
@@ -61,6 +62,7 @@ public class NegotiationService : INegotiationService
                 EmployeeSecret = request.OfferSide == Offer.OfferSide.Employee ? secret : null
             };
 
+            _logger.LogInformation("Persisting Negotiation entity {@Negotiation}", negotiation);
             _dbContext.Negotiations.Add(negotiation);
             await _dbContext.SaveChangesAsync();
 
@@ -76,11 +78,13 @@ public class NegotiationService : INegotiationService
                 NegotiationId = negotiation.Id
             };
 
+            _logger.LogInformation("Persisting Offer entity {@Offer}", offer);
             _dbContext.Offers.Add(offer);
             await _dbContext.SaveChangesAsync();
 
             await transaction.CommitAsync();
 
+            _logger.LogInformation("Created new negotiation with ID {NegotiationId}", negotiation.Id);
             return new NegotiationCreateOrClaimResponse
             {
                 Id = negotiation.Id,
@@ -91,6 +95,8 @@ public class NegotiationService : INegotiationService
 
     public async Task<NegotiationResponse> View(NegotiationViewRequest request)
     {
+        _logger.LogInformation("Viewing negotiation with data {@NegotiationViewRequest}", request);
+
         NegotiationViewRequest.Validator validator = new NegotiationViewRequest.Validator();
         ValidationResult result = await validator.ValidateAsync(request);
         if (!result.IsValid)
@@ -98,6 +104,7 @@ public class NegotiationService : INegotiationService
 
         using (IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable))
         {
+            _logger.LogInformation("Loading Negotiation with ID {NegotiationId}", request.Id);
             Negotiation negotiation = await _dbContext.Negotiations
             .FindAsync(request.Id);
 
@@ -112,6 +119,7 @@ public class NegotiationService : INegotiationService
                 negotiation.EmployeeSecret != request.Secret)
                 throw new ForbiddenException();
 
+            _logger.LogInformation("Loading Offers for negotiation with ID {NegotiationId}", negotiation.Id);
             List<OfferResponse> offers = await _dbContext.Offers
                 .AsNoTracking()
                 .OrderBy(o => o.OfferedDate)
@@ -132,10 +140,11 @@ public class NegotiationService : INegotiationService
 
             foreach (OfferResponse offer in offers)
             {
-                if (offer.Side == request.Side) continue;
-
-                if (offer.NeedsConterOfferToShow && offer.CounterOfferId == null)
+                if (offer.Side != request.Side &&
+                    offer.NeedsConterOfferToShow &&
+                    offer.CounterOfferId == null)
                 {
+                    _logger.LogInformation("Censoring offer with ID {OfferId}", offer.Id);
                     offer.Type = null;
                     offer.Amount = null;
                     offer.MaxAmount = null;
@@ -143,6 +152,7 @@ public class NegotiationService : INegotiationService
                 }
             }
 
+            _logger.LogInformation("Loaded negotiation with ID {NegotiationId} for side {NegotiationViewSide}", negotiation.Id, request.Side);
             return new NegotiationResponse
             {
                 Id = negotiation.Id,
@@ -157,6 +167,8 @@ public class NegotiationService : INegotiationService
 
     public async Task<NegotiationCreateOrClaimResponse> Claim(NegotiationClaimRequest request)
     {
+        _logger.LogInformation("Claiming negotiation with data {@NegotiationClaimRequest}", request);
+
         NegotiationClaimRequest.Validator validator = new NegotiationClaimRequest.Validator();
         ValidationResult result = await validator.ValidateAsync(request);
         if (!result.IsValid)
@@ -164,8 +176,9 @@ public class NegotiationService : INegotiationService
 
         using (IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable))
         {
+            _logger.LogInformation("Loading Negotiation with ID {NegotiationId}", request.Id);
             Negotiation negotiation = await _dbContext.Negotiations
-                .FindAsync(request.NegotiationId);
+                .FindAsync(request.Id);
 
             if (negotiation == null)
                 throw new NotFoundException();
@@ -198,6 +211,7 @@ public class NegotiationService : INegotiationService
                 await _dbContext.SaveChangesAsync();
             }
 
+            _logger.LogInformation("Claimed negotiation with ID {NegotiationId} for side {NegotiationClaimSide}", negotiation.Id, request.Side);
             await transaction.CommitAsync();
             return response;
         }
@@ -205,6 +219,8 @@ public class NegotiationService : INegotiationService
 
     public async Task<NegotiationMakeOfferResponse> MakeOffer(NegotiationMakeOfferRequest request)
     {
+        _logger.LogInformation("Making new offer with data {@NegotiationMakeOfferRequest}", request);
+
         NegotiationMakeOfferRequest.Validator validator = new NegotiationMakeOfferRequest.Validator();
         ValidationResult result = await validator.ValidateAsync(request);
         if (!result.IsValid)
@@ -212,6 +228,7 @@ public class NegotiationService : INegotiationService
 
         using (IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable))
         {
+            _logger.LogInformation("Loading Negotiation with ID {NegotiationId}", request.NegotiationId);
             Negotiation negotiation = await _dbContext.Negotiations
                 .FindAsync(request.NegotiationId);
 
@@ -226,6 +243,7 @@ public class NegotiationService : INegotiationService
                 negotiation.EmployeeSecret != request.Secret)
                 throw new ForbiddenException();
 
+            _logger.LogInformation("Loading Offers for negotiation with ID {NegotiationId}", negotiation.Id);
             List<Offer> offers = await _dbContext.Offers
                 .OrderBy(o => o.OfferedDate)
                 .Where(o => o.NegotiationId == negotiation.Id)
@@ -250,6 +268,7 @@ public class NegotiationService : INegotiationService
                 NeedsConterOfferToShow = request.NeedsCounterOfferToShow
             };
 
+            _logger.LogInformation("Persisting Offer entity {@Offer}", newOffer);
             _dbContext.Offers.Add(newOffer);
             await _dbContext.SaveChangesAsync();
 
@@ -267,6 +286,7 @@ public class NegotiationService : INegotiationService
 
                 newOffer.CounterOfferId = counteredOffer.Id;
                 counteredOffer.CounterOfferId = newOffer.Id;
+                _logger.LogInformation("Linking existing offer ID {ExistingOfferId} with new offer ID {NewOfferId}", counteredOffer.Id, newOffer.Id);
                 await _dbContext.SaveChangesAsync();
             }
 

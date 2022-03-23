@@ -37,6 +37,6 @@ public static class Program
 
         INegotiationService ns = serviceProvider.GetRequiredService<INegotiationService>();
 
-        return 0;
+        return await Task.FromResult(0);
     }
 }

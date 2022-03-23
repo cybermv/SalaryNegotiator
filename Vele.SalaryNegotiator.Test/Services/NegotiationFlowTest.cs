@@ -86,7 +86,7 @@ public class NegotiationFlowTest
         // Microsoft claims the negotiation
         NegotiationCreateOrClaimResponse claimRes = await _negotiationService.Claim(new NegotiationClaimRequest
         {
-            NegotiationId = negotiationId,
+            Id = negotiationId,
             Side = Offer.OfferSide.Employer,
             Name = "Microsoft Corp."
         });
@@ -396,7 +396,7 @@ public class NegotiationFlowTest
         // Can't claim as side which has secret already
         Assert.CatchAsync<ForbiddenException>(async () => await _negotiationService.Claim(new NegotiationClaimRequest
         {
-            NegotiationId = negotiationId,
+            Id = negotiationId,
             Name = "Exxon Mobil Bad",
             Side = Offer.OfferSide.Employee
         }));
@@ -404,7 +404,7 @@ public class NegotiationFlowTest
         // Exxon Mobil claims it's secret
         NegotiationCreateOrClaimResponse claimRes = await _negotiationService.Claim(new NegotiationClaimRequest
         {
-            NegotiationId = negotiationId,
+            Id = negotiationId,
             Name = "Exxon Mobil",
             Side = Offer.OfferSide.Employer
         });
@@ -416,7 +416,7 @@ public class NegotiationFlowTest
         // Can't claim two times
         Assert.CatchAsync<ForbiddenException>(async () => await _negotiationService.Claim(new NegotiationClaimRequest
         {
-            NegotiationId = negotiationId,
+            Id = negotiationId,
             Name = "Exxon Mobil Bad Again",
             Side = Offer.OfferSide.Employer
         }));
@@ -505,7 +505,7 @@ public class NegotiationFlowTest
 
         NegotiationCreateOrClaimResponse claimRes = await _negotiationService.Claim(new NegotiationClaimRequest
         {
-            NegotiationId = negotiationId,
+            Id = negotiationId,
             Side = Offer.OfferSide.Employee,
             Name = "Joe Average"
         });
