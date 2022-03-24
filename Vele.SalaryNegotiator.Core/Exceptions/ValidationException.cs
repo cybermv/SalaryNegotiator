@@ -14,7 +14,7 @@ namespace Vele.SalaryNegotiator.Core.Exceptions
 
         public ValidationException(string message, Exception inner) : base(message, inner) { }
 
-        public ValidationException(ValidationResult result) : base("Validation errors")
+        public ValidationException(ValidationResult result) : base($"Validation errors: {result}")
         {
             ValidationResult = result;
         }
