@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Vele.SalaryNegotiator.Core.Generators.Interfaces;
 using Vele.SalaryNegotiator.Core.Generators;
 using System;
+using Vele.SalaryNegotiator.Core.Dto;
+using Vele.SalaryNegotiator.Core.Data.Entities;
 
 namespace Vele.SalaryNegotiator.TestConsole;
 
@@ -15,6 +17,11 @@ public static class Program
 {
     public static async Task<int> Main(string[] args)
     {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .MinimumLevel.Information()
+            .CreateLogger();
+
         IServiceProvider serviceProvider = new ServiceCollection()
             .AddLogging(lb => lb.AddSerilog(dispose: true))
             .AddSingleton<ICodeGenerator, WordCodeGenerator>()
@@ -22,7 +29,7 @@ public static class Program
             .AddScoped<INegotiationService, NegotiationService>()
             .AddDbContext<SalaryNegotiatorDbContext>(db =>
             {
-                db.UseSqlite("Data source=SalaryNegotiator_Test.db");
+                db.UseSqlite("Data source=SalaryNegotiator_Console.db");
                 db.EnableSensitiveDataLogging();
                 db.EnableDetailedErrors();
             })
@@ -37,6 +44,72 @@ public static class Program
 
         INegotiationService ns = serviceProvider.GetRequiredService<INegotiationService>();
 
-        return await Task.FromResult(0);
+        NegotiationCreateOrClaimResponse createResponse = await ns.Create(new NegotiationCreateRequest
+        {
+            NegotiationName = "1545 - blagajnik/ca",
+            Name = "Konzum",
+            OfferSide = Offer.OfferSide.Employer,
+            OfferType = Offer.OfferType.Range,
+            MaxAmount = 5500,
+            MinAmount = 4200
+        });
+
+        NegotiationCreateOrClaimResponse claimResponse = await ns.Claim(new NegotiationClaimRequest
+        {
+            Id = createResponse.Id,
+            Name = "Marica Blajdić",
+            Side = Offer.OfferSide.Employee
+        });
+
+        NegotiationResponse viewRes1 = await ns.View(new NegotiationViewRequest
+        {
+            Id = createResponse.Id,
+            Side = Offer.OfferSide.Employee,
+            Secret = claimResponse.Secret
+        });
+
+        NegotiationMakeOfferResponse offerResponse1 = await ns.MakeOffer(new NegotiationMakeOfferRequest
+        {
+            NegotiationId = createResponse.Id,
+            Side = Offer.OfferSide.Employee,
+            Secret = claimResponse.Secret,
+            Type = Offer.OfferType.Minimum,
+            MinAmount = 5000,
+            NeedsCounterOfferToShow = true
+        });
+
+        NegotiationResponse viewRes2 = await ns.View(new NegotiationViewRequest
+        {
+            Id = createResponse.Id,
+            Side = Offer.OfferSide.Employer,
+            Secret = createResponse.Secret
+        });
+
+        NegotiationMakeOfferResponse offerResponse2 = await ns.MakeOffer(new NegotiationMakeOfferRequest
+        {
+            NegotiationId = createResponse.Id,
+            Side = Offer.OfferSide.Employer,
+            Secret = createResponse.Secret,
+            Type = Offer.OfferType.Fixed,
+            Amount = 5200,
+            NeedsCounterOfferToShow = true,
+            CounterOfferId = offerResponse1.Id
+        });
+
+        NegotiationResponse viewRes3 = await ns.View(new NegotiationViewRequest
+        {
+            Id = createResponse.Id,
+            Side = Offer.OfferSide.Employer,
+            Secret = createResponse.Secret
+        });
+
+        NegotiationResponse viewRes4 = await ns.View(new NegotiationViewRequest
+        {
+            Id = createResponse.Id,
+            Side = Offer.OfferSide.Employee,
+            Secret = claimResponse.Secret
+        });
+
+        return 0;
     }
 }
