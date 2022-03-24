@@ -128,7 +128,7 @@ public class NegotiationFlowTest
         Assert.That(negotiationResEmployer1.Offers[0].Amount, Is.Null);
         Assert.That(negotiationResEmployer1.Offers[0].MinAmount, Is.Null);
         Assert.That(negotiationResEmployer1.Offers[0].MaxAmount, Is.Null);
-        Assert.That(negotiationResEmployer1.Offers[0].NeedsConterOfferToShow, Is.True);
+        Assert.That(negotiationResEmployer1.Offers[0].NeedsCounterOfferToShow, Is.True);
 
         // Microsoft counters the initial offer with a fixed amount of 28k
         NegotiationMakeOfferResponse offerResEmployer1 = await _negotiationService.MakeOffer(new NegotiationMakeOfferRequest
@@ -206,7 +206,7 @@ public class NegotiationFlowTest
         Assert.That(negotiationResEmployer3.Offers.Single(o => o.Id == offer3Id).Type, Is.EqualTo(Offer.OfferType.Minimum));
         Assert.That(negotiationResEmployer3.Offers.Single(o => o.Id == offer3Id).MinAmount, Is.EqualTo(40000));
         Assert.That(negotiationResEmployer3.Offers.Single(o => o.Id == offer3Id).MaxAmount, Is.Null);
-        Assert.That(negotiationResEmployer3.Offers.Single(o => o.Id == offer3Id).NeedsConterOfferToShow, Is.False);
+        Assert.That(negotiationResEmployer3.Offers.Single(o => o.Id == offer3Id).NeedsCounterOfferToShow, Is.False);
         Assert.That(negotiationResEmployer3.Offers.Single(o => o.Id == offer3Id).CounterOfferId, Is.Null);
 
         // Microsoft makes another offer of 37k maximum and requires a counter offer
@@ -234,7 +234,7 @@ public class NegotiationFlowTest
         Assert.That(negotiationResEmployer4.Offers.Count, Is.EqualTo(4));
         Assert.That(negotiationResEmployer4.Offers.Single(o => o.Id == offer4Id).Type, Is.EqualTo(Offer.OfferType.Maximum));
         Assert.That(negotiationResEmployer4.Offers.Single(o => o.Id == offer4Id).MaxAmount, Is.EqualTo(37000));
-        Assert.That(negotiationResEmployer4.Offers.Single(o => o.Id == offer4Id).NeedsConterOfferToShow, Is.True);
+        Assert.That(negotiationResEmployer4.Offers.Single(o => o.Id == offer4Id).NeedsCounterOfferToShow, Is.True);
         Assert.That(negotiationResEmployer4.Offers.Single(o => o.Id == offer4Id).CounterOfferId, Is.Null);
 
         // John views the negotiation and sees three full offers and one from Microsoft closed
@@ -249,7 +249,7 @@ public class NegotiationFlowTest
         Assert.That(negotiationResEmployee3.Offers.Count, Is.EqualTo(4));
         Assert.That(negotiationResEmployee3.Offers.Single(o => o.Id == offer4Id).Type, Is.Null);
         Assert.That(negotiationResEmployee3.Offers.Single(o => o.Id == offer4Id).Amount, Is.Null);
-        Assert.That(negotiationResEmployee3.Offers.Single(o => o.Id == offer4Id).NeedsConterOfferToShow, Is.True);
+        Assert.That(negotiationResEmployee3.Offers.Single(o => o.Id == offer4Id).NeedsCounterOfferToShow, Is.True);
         Assert.That(negotiationResEmployee3.Offers.Single(o => o.Id == offer4Id).CounterOfferId, Is.Null);
 
         // John makes a counterofer to the last Microsoft offer, 39k minimum
@@ -278,11 +278,11 @@ public class NegotiationFlowTest
         Assert.That(negotiationResEmployee4.Offers.Count, Is.EqualTo(5));
         Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer4Id).Type, Is.EqualTo(Offer.OfferType.Maximum));
         Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer4Id).MaxAmount, Is.EqualTo(37000));
-        Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer4Id).NeedsConterOfferToShow, Is.True);
+        Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer4Id).NeedsCounterOfferToShow, Is.True);
         Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer4Id).CounterOfferId, Is.EqualTo(offer5Id));
         Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer5Id).Type, Is.EqualTo(Offer.OfferType.Minimum));
         Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer5Id).MinAmount, Is.EqualTo(39000));
-        Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer5Id).NeedsConterOfferToShow, Is.True);
+        Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer5Id).NeedsCounterOfferToShow, Is.True);
         Assert.That(negotiationResEmployee4.Offers.Single(o => o.Id == offer5Id).CounterOfferId, Is.EqualTo(offer4Id));
 
         // Microsoft views the negotiation and sees five full offers
@@ -297,11 +297,11 @@ public class NegotiationFlowTest
         Assert.That(negotiationResEmployer5.Offers.Count, Is.EqualTo(5));
         Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer4Id).Type, Is.EqualTo(Offer.OfferType.Maximum));
         Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer4Id).MaxAmount, Is.EqualTo(37000));
-        Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer4Id).NeedsConterOfferToShow, Is.True);
+        Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer4Id).NeedsCounterOfferToShow, Is.True);
         Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer4Id).CounterOfferId, Is.EqualTo(offer5Id));
         Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer5Id).Type, Is.EqualTo(Offer.OfferType.Minimum));
         Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer5Id).MinAmount, Is.EqualTo(39000));
-        Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer5Id).NeedsConterOfferToShow, Is.True);
+        Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer5Id).NeedsCounterOfferToShow, Is.True);
         Assert.That(negotiationResEmployer5.Offers.Single(o => o.Id == offer5Id).CounterOfferId, Is.EqualTo(offer4Id));
 
         // Microsoft makes another offer of 38k fixed
@@ -328,7 +328,7 @@ public class NegotiationFlowTest
         Assert.That(negotiationResEmployee5.Offers.Count, Is.EqualTo(6));
         Assert.That(negotiationResEmployee5.Offers.Single(o => o.Id == offer6Id).Type, Is.EqualTo(Offer.OfferType.Fixed));
         Assert.That(negotiationResEmployee5.Offers.Single(o => o.Id == offer6Id).Amount, Is.EqualTo(38000));
-        Assert.That(negotiationResEmployee5.Offers.Single(o => o.Id == offer6Id).NeedsConterOfferToShow, Is.False);
+        Assert.That(negotiationResEmployee5.Offers.Single(o => o.Id == offer6Id).NeedsCounterOfferToShow, Is.False);
         Assert.That(negotiationResEmployee5.Offers.Single(o => o.Id == offer6Id).CounterOfferId, Is.Null);
 
         // Microsoft views the negotiation and sees six offers
@@ -343,7 +343,7 @@ public class NegotiationFlowTest
         Assert.That(negotiationResEmployer6.Offers.Count, Is.EqualTo(6));
         Assert.That(negotiationResEmployer6.Offers.Single(o => o.Id == offer6Id).Type, Is.EqualTo(Offer.OfferType.Fixed));
         Assert.That(negotiationResEmployer6.Offers.Single(o => o.Id == offer6Id).Amount, Is.EqualTo(38000));
-        Assert.That(negotiationResEmployer6.Offers.Single(o => o.Id == offer6Id).NeedsConterOfferToShow, Is.False);
+        Assert.That(negotiationResEmployer6.Offers.Single(o => o.Id == offer6Id).NeedsCounterOfferToShow, Is.False);
         Assert.That(negotiationResEmployer6.Offers.Single(o => o.Id == offer6Id).CounterOfferId, Is.Null);
 
         Assert.Pass();

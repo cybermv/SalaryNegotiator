@@ -20,7 +20,7 @@ public class OfferResponse
 
     public DateTime CreatedDate { get; set; }
 
-    public bool NeedsConterOfferToShow { get; set; }
+    public bool NeedsCounterOfferToShow { get; set; }
 
     public int? CounterOfferId { get; set; }
 
@@ -48,7 +48,7 @@ public class OfferResponse
                 break;
         }
 
-        if (NeedsConterOfferToShow)
+        if (NeedsCounterOfferToShow)
         {
             if (CounterOfferId.HasValue)
             {

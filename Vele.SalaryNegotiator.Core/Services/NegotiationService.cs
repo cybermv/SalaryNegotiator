@@ -133,7 +133,7 @@ public class NegotiationService : INegotiationService
                     MaxAmount = o.MaxAmount,
                     MinAmount = o.MinAmount,
                     CreatedDate = o.OfferedDate,
-                    NeedsConterOfferToShow = o.NeedsConterOfferToShow,
+                    NeedsCounterOfferToShow = o.NeedsConterOfferToShow,
                     CounterOfferId = o.CounterOfferId
                 })
                 .ToListAsync();
@@ -141,7 +141,7 @@ public class NegotiationService : INegotiationService
             foreach (OfferResponse offer in offers)
             {
                 if (offer.Side != request.Side &&
-                    offer.NeedsConterOfferToShow &&
+                    offer.NeedsCounterOfferToShow &&
                     offer.CounterOfferId == null)
                 {
                     _logger.LogInformation("Censoring offer with ID {OfferId}", offer.Id);
