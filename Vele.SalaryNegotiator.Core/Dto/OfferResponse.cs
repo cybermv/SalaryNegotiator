@@ -18,7 +18,7 @@ public class OfferResponse
 
     public double? MinAmount { get; set; }
 
-    public DateTime OfferedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     public bool NeedsConterOfferToShow { get; set; }
 
@@ -27,7 +27,7 @@ public class OfferResponse
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append($"#{Id}-{OfferedDate:yyyyMMdd-HHmmss.fff} - {Side} - ");
+        sb.Append($"#{Id}-{CreatedDate:yyyyMMdd-HHmmss.fff} - {Side} - ");
 
         switch (Type)
         {

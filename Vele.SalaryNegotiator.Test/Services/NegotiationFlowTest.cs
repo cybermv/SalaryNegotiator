@@ -72,11 +72,11 @@ public class NegotiationFlowTest
         {
             NegotiationName = $"test_happy_{DateTime.Now:MMdd-hhmmss)}",
             Name = "John Smith",
-            OfferSide = Offer.OfferSide.Employee,
-            OfferType = Offer.OfferType.Range,
+            Side = Offer.OfferSide.Employee,
+            Type = Offer.OfferType.Range,
             MaxAmount = 50000,
             MinAmount = 35000,
-            NeedsConterOfferToShow = true
+            NeedsCounterOfferToShow = true
         });
 
         string negotiationId = createRes.Id;
@@ -356,12 +356,12 @@ public class NegotiationFlowTest
         {
             NegotiationName = "",
             Name = null,
-            OfferSide = Offer.OfferSide.Employee,
-            OfferType = Offer.OfferType.Range,
+            Side = Offer.OfferSide.Employee,
+            Type = Offer.OfferType.Range,
             Amount = -100,
             MaxAmount = null,
             MinAmount = 32,
-            NeedsConterOfferToShow = false
+            NeedsCounterOfferToShow = false
         }));
     }
 
@@ -373,10 +373,10 @@ public class NegotiationFlowTest
         {
             NegotiationName = $"test_fail_auth_{DateTime.Now:MMdd-hhmmss)}",
             Name = "Mike Langelo",
-            OfferSide = Offer.OfferSide.Employee,
-            OfferType = Offer.OfferType.Minimum,
+            Side = Offer.OfferSide.Employee,
+            Type = Offer.OfferType.Minimum,
             MinAmount = 25000,
-            NeedsConterOfferToShow = true
+            NeedsCounterOfferToShow = true
         });
 
         string negotiationId = createRes.Id;
@@ -509,11 +509,11 @@ public class NegotiationFlowTest
         {
             NegotiationName = $"test_fail_counter_{DateTime.Now:MMdd-hhmmss)}",
             Name = "BigCorp",
-            OfferSide = Offer.OfferSide.Employer,
-            OfferType = Offer.OfferType.Range,
+            Side = Offer.OfferSide.Employer,
+            Type = Offer.OfferType.Range,
             MaxAmount = 700,
             MinAmount = 500,
-            NeedsConterOfferToShow = true
+            NeedsCounterOfferToShow = true
         });
 
         string negotiationId = createRes.Id;

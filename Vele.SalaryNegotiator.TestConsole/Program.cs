@@ -48,8 +48,8 @@ public static class Program
         {
             NegotiationName = "1545 - blagajnik/ca",
             Name = "Konzum",
-            OfferSide = Offer.OfferSide.Employer,
-            OfferType = Offer.OfferType.Range,
+            Side = Offer.OfferSide.Employer,
+            Type = Offer.OfferType.Range,
             MaxAmount = 5500,
             MinAmount = 4200
         });

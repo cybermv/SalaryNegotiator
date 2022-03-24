@@ -48,18 +48,18 @@ public class NegotiationService : INegotiationService
         using (IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable))
         {
             string secret = null;
-            if (request.OfferSide == Offer.OfferSide.Employer) secret = _secretGenerator.GenerateForEmployer();
-            else if (request.OfferSide == Offer.OfferSide.Employee) secret = _secretGenerator.GenerateForEmployee();
+            if (request.Side == Offer.OfferSide.Employer) secret = _secretGenerator.GenerateForEmployer();
+            else if (request.Side == Offer.OfferSide.Employee) secret = _secretGenerator.GenerateForEmployee();
 
             Negotiation negotiation = new Negotiation
             {
                 Id = _codeGenerator.Generate(),
                 Name = request.NegotiationName,
-                EmployerName = request.OfferSide == Offer.OfferSide.Employer ? request.Name : null,
-                EmployeeName = request.OfferSide == Offer.OfferSide.Employee ? request.Name : null,
+                EmployerName = request.Side == Offer.OfferSide.Employer ? request.Name : null,
+                EmployeeName = request.Side == Offer.OfferSide.Employee ? request.Name : null,
                 CreatedDate = now,
-                EmployerSecret = request.OfferSide == Offer.OfferSide.Employer ? secret : null,
-                EmployeeSecret = request.OfferSide == Offer.OfferSide.Employee ? secret : null
+                EmployerSecret = request.Side == Offer.OfferSide.Employer ? secret : null,
+                EmployeeSecret = request.Side == Offer.OfferSide.Employee ? secret : null
             };
 
             _logger.LogInformation("Persisting Negotiation entity {@Negotiation}", negotiation);
@@ -68,13 +68,13 @@ public class NegotiationService : INegotiationService
 
             Offer offer = new Offer
             {
-                Side = request.OfferSide,
-                Type = request.OfferType,
+                Side = request.Side,
+                Type = request.Type,
                 Amount = request.Amount,
                 MaxAmount = request.MaxAmount,
                 MinAmount = request.MinAmount,
                 OfferedDate = now,
-                NeedsConterOfferToShow = request.NeedsConterOfferToShow,
+                NeedsConterOfferToShow = request.NeedsCounterOfferToShow,
                 NegotiationId = negotiation.Id
             };
 
@@ -132,7 +132,7 @@ public class NegotiationService : INegotiationService
                     Amount = o.Amount,
                     MaxAmount = o.MaxAmount,
                     MinAmount = o.MinAmount,
-                    OfferedDate = o.OfferedDate,
+                    CreatedDate = o.OfferedDate,
                     NeedsConterOfferToShow = o.NeedsConterOfferToShow,
                     CounterOfferId = o.CounterOfferId
                 })
