@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,15 +20,20 @@ namespace Vele.SalaryNegotiator.Test.Services;
 [TestFixture]
 public class NegotiationFlowTest
 {
+    private ILogger _logger;
     private IServiceProvider _serviceProvider;
     private INegotiationService _negotiationService;
-
 
     [SetUp]
     public void Setup()
     {
+        _logger = new LoggerConfiguration()
+            .WriteTo.Debug()
+            .MinimumLevel.Information()
+            .CreateLogger();
+
         _serviceProvider = new ServiceCollection()
-            .AddLogging()
+            .AddLogging(lb => lb.AddSerilog(_logger, dispose: true))
             .AddSingleton<ICodeGenerator, WordCodeGenerator>()
             .AddSingleton<ISecretGenerator, GuidSecretGenerator>()
             .AddScoped<INegotiationService, NegotiationService>()
@@ -46,6 +53,15 @@ public class NegotiationFlowTest
             //dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
         }
+    }
+
+    [TearDown]
+    public void Teardown()
+    {
+        if (_logger != null && _logger is IDisposable disposableLogger)
+            disposableLogger.Dispose();
+        if (_serviceProvider != null && _serviceProvider is IDisposable disposableServProv)
+            disposableServProv.Dispose();
     }
 
     [Test]
