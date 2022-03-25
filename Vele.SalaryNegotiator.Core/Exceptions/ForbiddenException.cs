@@ -5,7 +5,7 @@ namespace Vele.SalaryNegotiator.Core.Exceptions
 {
     public class ForbiddenException : BaseException
     {
-        public ForbiddenException() { }
+        public ForbiddenException() : this("Forbidden") { }
 
         public ForbiddenException(string message) : base(message) { }
 

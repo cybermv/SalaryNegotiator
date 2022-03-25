@@ -5,7 +5,7 @@ namespace Vele.SalaryNegotiator.Core.Exceptions
 {
     public class NotFoundException : BaseException
     {
-        public NotFoundException() { }
+        public NotFoundException() : this("Not found") { }
 
         public NotFoundException(string message) : base(message) { }
 
