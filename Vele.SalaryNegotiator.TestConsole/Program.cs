@@ -10,12 +10,24 @@ using Vele.SalaryNegotiator.Core.Generators;
 using System;
 using Vele.SalaryNegotiator.Core.Dto;
 using Vele.SalaryNegotiator.Core.Data.Entities;
+using Grpc.Net.Client;
+
+using GRPC = Vele.SalaryNegotiator.Grpc;
 
 namespace Vele.SalaryNegotiator.TestConsole;
 
 public static class Program
 {
     public static async Task<int> Main(string[] args)
+    {
+        //await RunCodeInConsole();
+        //await RunGrpcClient();
+
+
+        return 0;
+    }
+
+    public static async Task RunCodeInConsole()
     {
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
@@ -109,7 +121,61 @@ public static class Program
             Side = Offer.OfferSide.Employee,
             Secret = claimResponse.Secret
         });
+    }
 
-        return 0;
+    public static async Task RunGrpcClient()
+    {
+        using GrpcChannel channel = GrpcChannel.ForAddress("https://localhost:8700");
+        GRPC.NegotiationService.NegotiationServiceClient client = new GRPC.NegotiationService.NegotiationServiceClient(channel);
+
+        GRPC.NegotiationCreateOrClaimResponse createRes = await client.CreateAsync(new GRPC.NegotiationCreateRequest
+        {
+            NegotiationName = "Grpc negotiation",
+            Name = "Google",
+            Side = GRPC.OfferSide.Employer,
+            Type = GRPC.OfferType.Range,
+            MaxAmount = 100,
+            MinAmount = 70,
+            NeedsCounterOfferToShow = true
+        });
+
+        GRPC.NegotiationCreateOrClaimResponse claimRes = await client.ClaimAsync(new GRPC.NegotiationClaimRequest
+        {
+            Id = createRes.Id,
+            Name = "Bartul Kambilo",
+            Side = GRPC.OfferSide.Employee
+        });
+
+        GRPC.NegotiationResponse negotiationRes1 = await client.ViewAsync(new GRPC.NegotiationViewRequest
+        {
+            Id = createRes.Id,
+            Secret = claimRes.Secret,
+            Side = GRPC.OfferSide.Employee
+        });
+
+        GRPC.NegotiationMakeOfferResponse makeOfferRes1 = await client.MakeOfferAsync(new GRPC.NegotiationMakeOfferRequest
+        {
+            NegotiationId = createRes.Id,
+            Secret = claimRes.Secret,
+            Side = GRPC.OfferSide.Employee,
+            Type = GRPC.OfferType.Fixed,
+            Amount = 120,
+            NeedsCounterOfferToShow = true,
+            CounterOfferId = negotiationRes1.Offers[0].Id
+        });
+
+        GRPC.NegotiationResponse negotiationRes2 = await client.ViewAsync(new GRPC.NegotiationViewRequest
+        {
+            Id = createRes.Id,
+            Secret = claimRes.Secret,
+            Side = GRPC.OfferSide.Employee
+        });
+
+        GRPC.NegotiationResponse negotiationRes3 = await client.ViewAsync(new GRPC.NegotiationViewRequest
+        {
+            Id = createRes.Id,
+            Secret = createRes.Secret,
+            Side = GRPC.OfferSide.Employer
+        });
     }
 }
