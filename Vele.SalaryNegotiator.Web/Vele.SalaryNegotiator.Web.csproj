@@ -11,10 +11,17 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
 	<PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+	<PackageReference Include="AutoMapper" Version="11.0.1" />
+	<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Vele.SalaryNegotiator.Core\Vele.SalaryNegotiator.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Protobuf Include="Protos\negotiation_service.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

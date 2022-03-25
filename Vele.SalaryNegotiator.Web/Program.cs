@@ -9,6 +9,8 @@ using Vele.SalaryNegotiator.Core.Generators;
 using Vele.SalaryNegotiator.Core.Generators.Interfaces;
 using Vele.SalaryNegotiator.Core.Services;
 using Vele.SalaryNegotiator.Core.Services.Interfaces;
+using Vele.SalaryNegotiator.Web;
+using Vele.SalaryNegotiator.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,8 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddGrpc();
+
 builder.Services
     .AddSingleton<ICodeGenerator, WordCodeGenerator>()
     .AddSingleton<ISecretGenerator, GuidSecretGenerator>()
@@ -37,6 +41,8 @@ builder.Services
         db.EnableSensitiveDataLogging();
         db.EnableDetailedErrors();
     });
+
+builder.Services.AddAutoMapper(typeof(AutomapperConfiguration).Assembly);
 
 WebApplication app = builder.Build();
 
@@ -59,5 +65,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGrpcService<NegotiationServiceImpl>();
 
 app.Run();

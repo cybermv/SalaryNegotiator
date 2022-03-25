@@ -1,0 +1,98 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Vele.SalaryNegotiator.Grpc";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+package negotiation_service;
+
+service NegotiationService {
+	rpc Create (NegotiationCreateRequest) returns (NegotiationCreateOrClaimResponse);
+	rpc View (NegotiationViewRequest) returns (NegotiationResponse);
+	rpc Claim (NegotiationClaimRequest) returns (NegotiationCreateOrClaimResponse);
+	rpc MakeOffer (NegotiationMakeOfferRequest) returns (NegotiationMakeOfferResponse);
+}
+
+message NegotiationCreateRequest {
+	string NegotiationName = 1;
+	string Name = 2;
+	OfferSide Side = 3;
+	OfferType Type = 4;
+	google.protobuf.DoubleValue Amount = 5;
+	google.protobuf.DoubleValue MaxAmount = 6;
+	google.protobuf.DoubleValue MinAmount = 7;
+	bool NeedsCounterOfferToShow = 8;
+}
+
+message NegotiationViewRequest {
+	string Id = 1;
+	string Secret = 2;
+	OfferSide Side = 3;
+}
+
+message NegotiationClaimRequest {
+	string Id = 1;
+	OfferSide Side = 2;
+	string Name = 3;
+}
+
+message NegotiationMakeOfferRequest {
+	string NegotiationId = 1;
+	string Secret = 2;
+	int32 Side = 3;
+	int32 Type = 4;
+	google.protobuf.DoubleValue Amount = 5;
+	google.protobuf.DoubleValue MaxAmount = 6;
+	google.protobuf.DoubleValue MinAmount = 7;
+	bool NeedsCounterOfferToShow = 8;
+	google.protobuf.Int32Value CounterOfferId = 9;
+}
+
+message NegotiationCreateOrClaimResponse {
+	string Id = 1;
+	string Secret = 2;
+}
+
+message NegotiationMakeOfferResponse {
+	int32 Id = 1;
+}
+
+message NegotiationResponse {
+	string Id = 1;
+	string Name = 2;
+	string EmployerName = 3;
+	string EmployeeName = 4;
+	google.protobuf.Timestamp CreatedDate = 5;
+	repeated OfferResponse Offers = 6;
+
+	message OfferResponse {
+		int32 Id = 1;
+		OfferSide Side = 2;
+		OfferTypeValue Type = 3;
+		google.protobuf.DoubleValue Amount = 4;
+		google.protobuf.DoubleValue MaxAmount = 5;
+		google.protobuf.DoubleValue MinAmount = 6;
+		google.protobuf.Timestamp CreatedDate = 7;
+		bool NeedsCounterOfferToShow = 8;
+		google.protobuf.Int32Value CounterOfferId = 9;
+	}
+}
+
+enum OfferType {
+	OFFER_TYPE_UNKNOWN = 0;
+	OFFER_TYPE_FIXED = 1;
+	OFFER_TYPE_RANGE = 2;
+	OFFER_TYPE_MINIMUM = 3;
+	OFFER_TYPE_MAXIMUM = 4;
+}
+
+enum OfferSide {
+	OFFER_SIDE_UNKNOWN = 0;
+	OFFER_SIDE_EMPLOYER = 1;
+	OFFER_SIDE_EMPLOYEE = 2;
+}
+
+message OfferTypeValue {
+	OfferType value = 1;
+}
