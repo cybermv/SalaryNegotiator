@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using Vele.SalaryNegotiator.Core.Exceptions;
 
-namespace Vele.SalaryNegotiator.Web.Filters;
+namespace Vele.SalaryNegotiator.Web.Exceptions;
 
 public class ExceptionFilterAttribute : ActionFilterAttribute
 {

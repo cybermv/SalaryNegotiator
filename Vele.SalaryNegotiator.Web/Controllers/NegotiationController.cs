@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Vele.SalaryNegotiator.Core.Dto;
 using Vele.SalaryNegotiator.Core.Services.Interfaces;
-using Vele.SalaryNegotiator.Web.Filters;
+using Vele.SalaryNegotiator.Web.Exceptions;
 
 namespace Vele.SalaryNegotiator.Web.Controllers;
 

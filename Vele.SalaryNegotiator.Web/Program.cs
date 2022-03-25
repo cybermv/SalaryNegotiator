@@ -10,6 +10,7 @@ using Vele.SalaryNegotiator.Core.Generators.Interfaces;
 using Vele.SalaryNegotiator.Core.Services;
 using Vele.SalaryNegotiator.Core.Services.Interfaces;
 using Vele.SalaryNegotiator.Web;
+using Vele.SalaryNegotiator.Web.Exceptions;
 using Vele.SalaryNegotiator.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +30,10 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(configuration =>
+{
+    configuration.Interceptors.Add<GrpcExceptionInterceptor>();
+});
 
 builder.Services
     .AddSingleton<ICodeGenerator, WordCodeGenerator>()
