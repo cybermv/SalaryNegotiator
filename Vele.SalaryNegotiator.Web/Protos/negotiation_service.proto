@@ -40,8 +40,8 @@ message NegotiationClaimRequest {
 message NegotiationMakeOfferRequest {
 	string NegotiationId = 1;
 	string Secret = 2;
-	int32 Side = 3;
-	int32 Type = 4;
+	OfferSide Side = 3;
+	OfferType Type = 4;
 	google.protobuf.DoubleValue Amount = 5;
 	google.protobuf.DoubleValue MaxAmount = 6;
 	google.protobuf.DoubleValue MinAmount = 7;
