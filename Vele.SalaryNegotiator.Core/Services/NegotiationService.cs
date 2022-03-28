@@ -73,7 +73,7 @@ public class NegotiationService : INegotiationService
                 Amount = request.Amount,
                 MaxAmount = request.MaxAmount,
                 MinAmount = request.MinAmount,
-                OfferedDate = now,
+                CreatedDate = now,
                 NeedsConterOfferToShow = request.NeedsCounterOfferToShow,
                 NegotiationId = negotiation.Id
             };
@@ -122,7 +122,7 @@ public class NegotiationService : INegotiationService
             _logger.LogInformation("Loading Offers for negotiation with ID {NegotiationId}", negotiation.Id);
             List<OfferResponse> offers = await _dbContext.Offers
                 .AsNoTracking()
-                .OrderBy(o => o.OfferedDate)
+                .OrderBy(o => o.CreatedDate)
                 .Where(o => o.NegotiationId == negotiation.Id)
                 .Select(o => new OfferResponse
                 {
@@ -132,7 +132,7 @@ public class NegotiationService : INegotiationService
                     Amount = o.Amount,
                     MaxAmount = o.MaxAmount,
                     MinAmount = o.MinAmount,
-                    CreatedDate = o.OfferedDate,
+                    CreatedDate = o.CreatedDate,
                     NeedsCounterOfferToShow = o.NeedsConterOfferToShow,
                     CounterOfferId = o.CounterOfferId
                 })
@@ -245,7 +245,7 @@ public class NegotiationService : INegotiationService
 
             _logger.LogInformation("Loading Offers for negotiation with ID {NegotiationId}", negotiation.Id);
             List<Offer> offers = await _dbContext.Offers
-                .OrderBy(o => o.OfferedDate)
+                .OrderBy(o => o.CreatedDate)
                 .Where(o => o.NegotiationId == negotiation.Id)
                 .ToListAsync();
 
@@ -263,7 +263,7 @@ public class NegotiationService : INegotiationService
                 Amount = request.Amount,
                 MaxAmount = request.MaxAmount,
                 MinAmount = request.MinAmount,
-                OfferedDate = DateTime.UtcNow,
+                CreatedDate = DateTime.UtcNow,
                 NegotiationId = negotiation.Id,
                 NeedsConterOfferToShow = request.NeedsCounterOfferToShow
             };

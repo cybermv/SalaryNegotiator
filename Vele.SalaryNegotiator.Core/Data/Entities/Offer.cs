@@ -18,7 +18,7 @@ public class Offer
 
     public double? MinAmount { get; set; }
 
-    public DateTime OfferedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     public bool NeedsConterOfferToShow { get; set; }
 
