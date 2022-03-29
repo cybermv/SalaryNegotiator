@@ -85,9 +85,4 @@ app.MapControllers();
 app.MapGrpcService<NegotiationServiceImpl>();
 app.MapGrpcService<AdminServiceImpl>();
 
-app.Run(async context =>
-{
-    await context.Response.BodyWriter.WriteAsync(Encoding.UTF8.GetBytes("Hej! This is the Salary Negotiator API. Head on to /swagger to see what can be done."));
-});
-
-app.Run();
+await app.RunAsync();
