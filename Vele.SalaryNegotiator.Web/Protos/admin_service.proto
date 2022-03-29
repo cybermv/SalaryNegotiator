@@ -1,0 +1,51 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Vele.SalaryNegotiator.Grpc";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "Protos/negotiation_service.proto";
+
+package admin_service;
+
+service AdminService {
+	rpc View (NegotiationAdminViewRequest) returns (NegotiationAdminResponseList);
+	rpc Delete (NegotiationAdminDeleteRequest) returns (google.protobuf.Empty);
+}
+
+message NegotiationAdminViewRequest {
+	string Secret = 1;
+}
+
+message NegotiationAdminDeleteRequest {
+	string Secret = 1;
+	string Id = 2;
+}
+
+message NegotiationAdminResponseList {
+	repeated NegotiationAdminResponse Data = 1;
+}
+
+message NegotiationAdminResponse {
+	string Id = 1;
+	string Name = 2;
+	string EmployerName = 3;
+	string EmployerSecret = 4;
+	string EmployeeName = 5;
+	string EmployeeSecret = 6;
+	google.protobuf.Timestamp CreatedDate = 7;
+	repeated OfferAdminResponse Offers = 8;
+
+	message OfferAdminResponse {
+		int32 Id = 1;
+		negotiation_service.OfferSide Side = 2;
+		negotiation_service.OfferType Type = 3;
+		google.protobuf.DoubleValue Amount = 4;
+		google.protobuf.DoubleValue MaxAmount = 5;
+		google.protobuf.DoubleValue MinAmount = 6;
+		google.protobuf.Timestamp CreatedDate = 7;
+		bool NeedsCounterOfferToShow = 8;
+		google.protobuf.Int32Value CounterOfferId = 9;
+	}
+}
