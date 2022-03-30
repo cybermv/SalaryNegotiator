@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Vele.SalaryNegotiator.Core.Data;
@@ -63,7 +64,7 @@ using (IServiceScope scope = app.Services.CreateScope())
         SalaryNegotiatorDbContext dbContext = scope.ServiceProvider.GetRequiredService<SalaryNegotiatorDbContext>();
         dbContext.Database.EnsureCreated();
     }
-    catch (System.Exception ex)
+    catch (Exception ex)
     {
         scope.ServiceProvider.GetRequiredService<ILogger>().Error(ex, "Error occurred while attempting to migrate database");
         throw;
@@ -72,6 +73,8 @@ using (IServiceScope scope = app.Services.CreateScope())
 
 // Build the middleware pipeline.
 app.UseDeveloperExceptionPage();
+
+app.UseFileServer();
 
 app.UseSwagger();
 app.UseSwaggerUI();
