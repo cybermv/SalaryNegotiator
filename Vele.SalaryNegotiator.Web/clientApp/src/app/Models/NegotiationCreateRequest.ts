@@ -1,12 +1,14 @@
 export class NegotiationCreateRequest {
-  negotiationName: string;
-  name: string;
-  side:OfferSide;
-  type:OfferType;
-  amount:number;
-  maxAmount:number;
-  minAmount:number;
-  needsCounterOfferToShow:boolean;
+  constructor(
+    public negotiationName: string,
+    public name: string,
+    public side: OfferSide,
+    public type: OfferType,
+    public amount: number,
+    public maxAmount: number,
+    public minAmount: number,
+    public needsCounterOfferToShow: boolean
+  ) { }
 }
 
 export enum OfferSide{

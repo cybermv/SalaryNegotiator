@@ -8,8 +8,7 @@ import {FormGroup} from "@angular/forms";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  form=new FormGroup({});
-   negotiationCreateRequest=new NegotiationCreateRequest();
+
   constructor() { }
 
   ngOnInit(): void {
