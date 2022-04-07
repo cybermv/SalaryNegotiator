@@ -33,10 +33,10 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddGrpc(configuration =>
-{
-    configuration.Interceptors.Add<GrpcExceptionInterceptor>();
-});
+// builder.Services.AddGrpc(configuration =>
+// {
+//     configuration.Interceptors.Add<GrpcExceptionInterceptor>();
+// });
 
 builder.Services
     .AddSingleton<ICodeGenerator, WordCodeGenerator>()
@@ -45,9 +45,9 @@ builder.Services
     .AddScoped<IAdminService, AdminService>()
     .AddDbContext<SalaryNegotiatorDbContext>(db =>
     {
-        db.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+        // db.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
         //db.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
-        //db.UseSqlite("Data source=SalaryNegotiator_Web.db");
+        db.UseSqlite("Data source=SalaryNegotiator_Web.db");
         //db.EnableSensitiveDataLogging();
         //db.EnableDetailedErrors();
     });
@@ -85,7 +85,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGrpcService<NegotiationServiceImpl>();
-app.MapGrpcService<AdminServiceImpl>();
+// app.MapGrpcService<NegotiationServiceImpl>();
+// app.MapGrpcService<AdminServiceImpl>();
 
 await app.RunAsync();
