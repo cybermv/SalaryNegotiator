@@ -1,0 +1,17 @@
+<form [formGroup]="radioInputInfo!.formGroup">
+  <div *ngFor="let enum of radioInputInfo!.options | keyvalue;
+  let i = index">
+    <div *ngIf="(i+1).toString()==enum.key">
+      <input
+             type="radio"
+             formControlName="{{radioInputInfo!.name}}"
+             [value]="enum.key"
+             name="fares"
+      >
+     {{ enum.value}}
+    </div>
+  </div>
+</form>
+
+
+

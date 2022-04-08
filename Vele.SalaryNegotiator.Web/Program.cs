@@ -6,6 +6,7 @@ using Serilog;
 using System;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Hosting;
 using Vele.SalaryNegotiator.Core.Data;
 using Vele.SalaryNegotiator.Core.Generators;
 using Vele.SalaryNegotiator.Core.Generators.Interfaces;
@@ -80,6 +81,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors(x => x.WithOrigins("http://localhost:4200")
+    .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+}
 
 app.UseAuthorization();
 

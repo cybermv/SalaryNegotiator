@@ -18,6 +18,7 @@ export enum OfferSide{
 export enum OfferType{
   Fixed = 1,
   Range = 2,
-  Minimum = 3,
-  Maximum = 4
+}
+export type StandardEnum<T> = {
+  [nu: number]: string;
 }
