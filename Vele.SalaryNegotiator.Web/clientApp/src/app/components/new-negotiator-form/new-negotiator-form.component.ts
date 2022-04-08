@@ -17,9 +17,9 @@ export class NewNegotiatorFormComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     side: new FormControl('1', [Validators.required]),
     type: new FormControl('1', [Validators.required]),
-    amount: new FormControl('0', [Validators.required]),
-    maxAmount: new FormControl('0', [Validators.required]),
-    minAmount: new FormControl('0', [Validators.required]),
+    amount: new FormControl('', [Validators.required]),
+    maxAmount: new FormControl('', [Validators.required]),
+    minAmount: new FormControl('', [Validators.required]),
     needsCounterOfferToShow: new FormControl(false, ),
   });
   negotiationNameInfo=new TextInputInfo('negotiationName','negotiationName','Negotiation Name',this.negotiationName,'VALID');
@@ -72,6 +72,7 @@ export class NewNegotiatorFormComponent implements OnInit {
   }
 
   onSubmit(){
+    this.form.markAllAsTouched()
     console.log(this.form.value);
     if(this.form.valid){
       var negotiationCreateRequest=new NegotiationCreateRequest(
