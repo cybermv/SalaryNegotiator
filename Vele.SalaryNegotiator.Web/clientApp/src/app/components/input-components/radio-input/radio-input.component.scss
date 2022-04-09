@@ -1,25 +1,63 @@
-.custom-radio-btn{
-  width: 25px;
-  height: 25px;
-  border:2px solid #ec008c;
-  border-radius: 50%;
-  margin-left: 20px;
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+$primary-color: #fc6767; // Change color here. C'mon, try it!
+$text-color: mix(#000, $primary-color, 64%);
+
+
+.radioForm {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
-.custom-radio-btn .checkMark{
-  width: calc(100% - 6px);
-  height: calc(100% - 6px);
-  border-radius: 50%;
-  background-color: #fc6767;
-  display: inline-block;
-  opacity: 0;
-  transition: opacity .5s ease;
-}
-.custom-radio-btn input{
-  display: none;
-}
-.custom-radio-btn input:checked + .checkMark{
-  opacity: 1;
+
+.radioLabel {
+  display: flex;
+  cursor: pointer;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.375em;
+  /* Accessible outline */
+  /* Remove comment to use */
+  /*
+    &:focus-within {
+        outline: .125em solid $primary-color;
+    }
+  */
+  .radioInput {
+    position: absolute;
+    left: -9999px;
+    &:checked + span {
+      background-color: mix(#fff, $primary-color, 84%);
+      &:before {
+        box-shadow: inset 0 0 0 0.4375em $primary-color;
+      }
+    }
+  }
+  .radioText {
+    display: flex;
+    align-items: center;
+    padding: 0.375em 0.75em 0.375em 0.375em;
+    border-radius: 99em; // or something higher...
+    transition: 0.25s ease;
+    &:hover {
+      background-color: mix(#fff, $primary-color, 84%);
+    }
+    &:before {
+      display: flex;
+      flex-shrink: 0;
+      content: "";
+      background-color: #fff;
+      width: 1.5em;
+      height: 1.5em;
+      border-radius: 50%;
+      margin-right: 0.375em;
+      transition: 0.25s ease;
+      box-shadow: inset 0 0 0 0.125em $primary-color;
+    }
+  }
 }

@@ -5,28 +5,28 @@
       <div class="input-group">
         <app-text-input [textInputInfo]="negotiationNameInfo"></app-text-input>
       </div>
-      <div class="input-group">
+      <div class="input-group mb-4">
         <app-text-input [textInputInfo]="nameInfo"></app-text-input>
       </div>
-      <div class="input-group">
+    <div class="input-group">
         <app-radio-input [radioInputInfo]="typeInfo"></app-radio-input>
       </div>
-      <div *ngIf="type.value==offerType.Fixed" class="input-group">
+      <div *ngIf="type.value==offerType.Fixed" class="input-group mb-4">
         <app-text-input [textInputInfo]="amountInfo"></app-text-input>
       </div>
-      <div *ngIf="type.value==offerType.Range" class="input-group">
+      <div *ngIf="type.value==offerType.Range" class="input-group mb-4">
         <app-text-input [textInputInfo]="minAmountInfo"></app-text-input>
       </div>
-      <div *ngIf="type.value==offerType.Range" class="input-group">
+      <div *ngIf="type.value==offerType.Range" class="input-group mb-4">
         <app-text-input [textInputInfo]="maxAmountInfo"></app-text-input>
       </div>
-      <div class="input-group">
+      <div class="input-group mb-4">
         <app-radio-input [radioInputInfo]="sideInfo"></app-radio-input>
       </div>
-      <div class="input-group">
+      <div class="input-group mb-4">
         <app-checkbox-input [checkboxInputInfo]="needsCounterOfferToShowInfo"></app-checkbox-input>
       </div>
-    <div class="input-group">
+    <div class="input-group mb-4">
     <button class="submit-btn" (click)="onSubmit()">Submit</button>
     </div>
   </form>
