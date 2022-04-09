@@ -1,8 +1,10 @@
+
 <form [formGroup]="checkboxInputInfo!.control">
-<input [ngClass]="checkboxInputInfo!.control.touched&&checkboxInputInfo!.control.invalid? 'alert-danger-validation':''"
-       formControlName="{{checkboxInputInfo!.name}}"
-       type="checkbox"
-       value=true
-       id="{{checkboxInputInfo!.id}}" placeholder="{{checkboxInputInfo!.placeholder}}" >
-<label class="m-lg-1">{{checkboxInputInfo!.placeholder}}</label>
+  <input type="checkbox" id="box-1"
+         formControlName="{{checkboxInputInfo!.name}}"
+         value=true
+         placeholder="{{checkboxInputInfo!.placeholder}}">
+  <label for="box-1">{{checkboxInputInfo!.placeholder}}</label>
 </form>
+
+
