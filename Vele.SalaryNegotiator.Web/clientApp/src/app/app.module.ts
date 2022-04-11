@@ -11,6 +11,7 @@ import { RadioInputComponent } from './components/input-components/radio-input/r
 import { CheckboxInputComponent } from './components/input-components/checkbox-input/checkbox-input.component';
 import {HttpClientModule} from "@angular/common/http";
 import {NegotiationService} from "./services/negotiation.service";
+import {NumberInputComponent} from "./components/input-components/number-input/number-input.component";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {NegotiationService} from "./services/negotiation.service";
     HomeComponent,
     NewNegotiatorFormComponent,
     TextInputComponent,
+    NumberInputComponent,
     RadioInputComponent,
     CheckboxInputComponent
   ],

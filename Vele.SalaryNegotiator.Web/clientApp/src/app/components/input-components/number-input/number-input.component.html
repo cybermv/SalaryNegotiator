@@ -1,0 +1,5 @@
+
+<input [ngClass]="numberInputInfo!.control.touched&&numberInputInfo!.control.invalid? 'alert-danger-validation':''"
+       [formControl]="numberInputInfo!.control" type="number"
+       id="{{numberInputInfo!.id}}" placeholder="{{numberInputInfo!.placeholder}}" >
+<span class="bar"></span>

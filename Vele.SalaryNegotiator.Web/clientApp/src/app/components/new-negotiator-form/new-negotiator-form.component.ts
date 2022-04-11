@@ -5,6 +5,7 @@ import {RadioInputInfo,} from "../input-components/radio-input/radio-input.compo
 import {NegotiationCreateRequest, OfferSide, OfferType} from "../../Models/NegotiationCreateRequest";
 import {CheckBoxInputInfo} from "../input-components/checkbox-input/checkbox-input.component";
 import {NegotiationService} from "../../services/negotiation.service";
+import {NumberInputInfo} from "../input-components/number-input/number-input.component";
 
 @Component({
   selector: 'app-new-negotiator-form',
@@ -24,7 +25,7 @@ export class NewNegotiatorFormComponent implements OnInit {
   });
   negotiationNameInfo=new TextInputInfo('negotiationName','negotiationName','Negotiation Name',this.negotiationName,'VALID');
   nameInfo=new TextInputInfo('name','name','Name',this.name,'VALID');
-  amountInfo=new TextInputInfo('amount','amount','Amount',this.amount,'VALID');
+  amountInfo=new NumberInputInfo('amount','amount','Amount',this.amount,'VALID');
   minAmountInfo=new TextInputInfo('minAmount','minAmount','Min Amount',this.minAmount,'VALID');
   maxAmountInfo=new TextInputInfo('maxAmount','maxAmount','Max Amount',this.maxAmount,'VALID');
   typeInfo=new RadioInputInfo('type','type','Type',this.form,'VALID',OfferType);

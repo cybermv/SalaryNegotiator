@@ -12,13 +12,13 @@
         <app-radio-input [radioInputInfo]="typeInfo"></app-radio-input>
       </div>
       <div *ngIf="type.value==offerType.Fixed" class="input-group mb-4">
-        <app-text-input [textInputInfo]="amountInfo"></app-text-input>
+        <app-number-input [numberInputInfo]="amountInfo"></app-number-input>
       </div>
       <div *ngIf="type.value==offerType.Range" class="input-group mb-4">
-        <app-text-input [textInputInfo]="minAmountInfo"></app-text-input>
+        <app-number-input [numberInputInfo]="minAmountInfo"></app-number-input>
       </div>
       <div *ngIf="type.value==offerType.Range" class="input-group mb-4">
-        <app-text-input [textInputInfo]="maxAmountInfo"></app-text-input>
+        <app-number-input [numberInputInfo]="maxAmountInfo"></app-number-input>
       </div>
       <div class="input-group mb-4">
         <app-radio-input [radioInputInfo]="sideInfo"></app-radio-input>
