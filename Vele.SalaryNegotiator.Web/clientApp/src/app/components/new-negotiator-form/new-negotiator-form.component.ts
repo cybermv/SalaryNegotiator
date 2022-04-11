@@ -18,8 +18,8 @@ export class NewNegotiatorFormComponent implements OnInit {
     side: new FormControl('1', [Validators.required]),
     type: new FormControl('1', [Validators.required]),
     amount: new FormControl('', [Validators.required]),
-    maxAmount: new FormControl('', [Validators.required]),
-    minAmount: new FormControl('', [Validators.required]),
+    maxAmount: new FormControl('', ),
+    minAmount: new FormControl('', ),
     needsCounterOfferToShow: new FormControl(false, ),
   });
   negotiationNameInfo=new TextInputInfo('negotiationName','negotiationName','Negotiation Name',this.negotiationName,'VALID');
@@ -41,14 +41,7 @@ export class NewNegotiatorFormComponent implements OnInit {
     return this.form.get('name') as FormControl;
   }
   get amount() {
-    var controller=(this.form.get('amount') as FormControl);
-    if(this.type.value==OfferType.Range){
-       controller.setValidators([Validators.required]);
-    }
-    else{
-       controller.setValidators([]);
-    }
-    return controller;
+    return this.form.get('amount') as FormControl;
   }
   get maxAmount() {
     return this.form.get('maxAmount') as FormControl;
@@ -69,6 +62,19 @@ export class NewNegotiatorFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.type.valueChanges.subscribe(()=>{
+      if(this.type.value==OfferType.Fixed){
+        this.amount.setValidators([Validators.required]);
+        this.maxAmount.setValidators([]);
+        this.minAmount.setValidators([]);
+      }
+      else{
+        this.maxAmount.setValidators([Validators.required]);
+        this.minAmount.setValidators([Validators.required]);
+        this.amount.setValidators([]);
+      }
+      this.amount.updateValueAndValidity();
+    })
   }
 
   onSubmit(){
